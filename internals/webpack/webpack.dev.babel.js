@@ -11,6 +11,7 @@ const logger = require('../../server/logger');
 const cheerio = require('cheerio');
 const pkg = require(path.resolve(process.cwd(), 'package.json'));
 const dllPlugin = pkg.dllPlugin;
+const Dotenv = require('dotenv-webpack')
 
 const plugins = [
   new webpack.HotModuleReplacementPlugin(), // Tell webpack we want hot reloading
@@ -23,6 +24,9 @@ const plugins = [
     exclude: /a\.js|node_modules/, // exclude node_modules
     failOnError: false, // show a warning when there is a circular dependency
   }),
+  new Dotenv({
+      path: './.env'
+  })
 ];
 
 module.exports = require('./webpack.base.babel')({

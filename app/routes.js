@@ -34,6 +34,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/loans/apply',
+      name: 'loanApplication',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/LoanApplication/reducer'),
+          import('containers/LoanApplication/sagas'),
+          import('containers/LoanApplication'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('loanApplication', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
